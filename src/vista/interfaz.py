@@ -57,7 +57,7 @@ def close_window():
 #Crear Ventana
 def crearVentana():
     root = tk.Tk()
-    root.title("Modelo Pc")
+    root.title("Modelo Hodgkin-Huxley")
     root.resizable(1,1)
     center(root,1000, 600)
     return root
