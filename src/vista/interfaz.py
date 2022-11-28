@@ -147,7 +147,7 @@ frame31 = tk.Frame(master=frame_abajo)
 frame31.grid( row=0, column=0, pady=0,padx=0)
 #frame31.config(bg="green")
 frame31.config(width="500",height="300")
-tk.Label(frame31, text ="Metodo de Solución:",font=(18)).grid(pady=25, padx=100, row=0, column=0)
+tk.Label(frame31, text ="Metodo de Solución:",font=(16)).grid(pady=25, padx=100, row=0, column=0)
 
 #Checkbuttons
 var1 = tk.IntVar()
@@ -156,15 +156,15 @@ var3 = tk.IntVar()
 var4 = tk.IntVar()
 var5 = tk.IntVar()
 
-c1 = tk.Checkbutton(frame31, text='Ruggen-Kutta 2',variable=var1, onvalue=1, offvalue=0, command=print_selection)
+c1 = tk.Checkbutton(frame31, text='Ruggen-Kutta 2', font='arial 14',variable=var1, onvalue=1, offvalue=0, command=print_selection)
 c1.grid(pady=5,padx=100, row=1, column=0,sticky="w")
-c2 = tk.Checkbutton(frame31, text='Ruggen-Kutta 4',variable=var2, onvalue=1, offvalue=0, command=print_selection)
+c2 = tk.Checkbutton(frame31, text='Ruggen-Kutta 4', font='arial 14',variable=var2, onvalue=1, offvalue=0, command=print_selection)
 c2.grid(pady=5, padx=100, row=2, column=0,sticky="w")
-c3 = tk.Checkbutton(frame31, text='Euler Adelante',variable=var3, onvalue=1, offvalue=0, command=print_selection)
+c3 = tk.Checkbutton(frame31, text='Euler Adelante',font='arial 14',variable=var3, onvalue=1, offvalue=0, command=print_selection)
 c3.grid(pady=5, padx=100, row=3, column=0,sticky="w")
-c4 = tk.Checkbutton(frame31, text='Euler Modificado',variable=var4, onvalue=1, offvalue=0, command=print_selection)
+c4 = tk.Checkbutton(frame31, text='Euler Modificado',font='arial 14',variable=var4, onvalue=1, offvalue=0, command=print_selection)
 c4.grid(pady=5, padx=100, row=4, column=0,sticky="w")
-c5 = tk.Checkbutton(frame31, text='Euler Atras',variable=var5, onvalue=1, offvalue=0, command=print_selection)
+c5 = tk.Checkbutton(frame31, text='Euler Atras', font='arial 14',variable=var5, onvalue=1, offvalue=0, command=print_selection)
 c5.grid(pady=5, padx=100, row=5, column=0,sticky="w")
 
 
@@ -184,11 +184,11 @@ var6 = tk.IntVar()
 var7 = tk.IntVar()
 var8 = tk.IntVar()
 
-c6 = tk.Checkbutton(frame32, text='V(t)',variable=var6, onvalue=1, offvalue=0, command=print_selection)
+c6 = tk.Checkbutton(frame32, text='V(t)',font='arial 11',variable=var6, onvalue=1, offvalue=0, command=print_selection)
 c6.grid(pady=5, padx=0, row=1, column=1,sticky="e",columnspan=2)
-c7 = tk.Checkbutton(frame32, text='Gk(t)',variable=var7, onvalue=1, offvalue=0, command=print_selection)
+c7 = tk.Checkbutton(frame32, text='Gk(t)',font='arial 11',variable=var7, onvalue=1, offvalue=0, command=print_selection)
 c7.grid(pady=5, padx=0,row=1, column=3, columnspan=2)
-c8 = tk.Checkbutton(frame32, text='GNa(t)',variable=var8, onvalue=1, offvalue=0, command=print_selection)
+c8 = tk.Checkbutton(frame32, text='GNa(t)',font='arial 11',variable=var8, onvalue=1, offvalue=0, command=print_selection)
 c8.grid(pady=5, padx=0,row=1, column=5)
 
 
@@ -201,30 +201,27 @@ cuadro3 = tk.Entry(frame32,width=8)
 cuadro4 = tk.Entry(frame32,width=8)
 cuadro5 = tk.Entry(frame32,width=8)
 
-tk.Label(frame32, text ="Parámetros",font=(18)).grid(pady=15,padx=100, row=2, column=3,columnspan=2)
+tk.Label(frame32, text ="Parámetros",font=(16)).grid(pady=15,padx=100, row=2, column=3,columnspan=2)
 
-tk.Label(frame32, text ="EK",font=(18)).grid(pady=5,padx=0, row=3, column=1)
+tk.Label(frame32, text ="EK",font=(16)).grid(pady=5,padx=0, row=3, column=1)
 cuadro1.grid(pady=5,padx=0, row=3, column=2)
-tk.Label(frame32, text ="mV",font=(18)).grid(pady=5,padx=0, row=3, column=3)
+tk.Label(frame32, text ="mV",font=(16)).grid(pady=5,padx=0, row=3, column=3)
 
-tk.Label(frame32, text ="ENa",font=(18)).grid(pady=5,padx=0, row=4, column=1)
+tk.Label(frame32, text ="ENa",font=(16)).grid(pady=5,padx=0, row=4, column=1)
 cuadro2.grid(pady=5,padx=0, row=4, column=2)
-tk.Label(frame32, text ="mV",font=(18)).grid(pady=5,padx=0, row=4, column=3)
+tk.Label(frame32, text ="mV",font=(16)).grid(pady=5,padx=0, row=4, column=3)
 
-tk.Label(frame32, text ="El",font=(18)).grid(pady=5,padx=0, row=5, column=1)
+tk.Label(frame32, text ="El",font=(16)).grid(pady=5,padx=0, row=5, column=1)
 cuadro3.grid(pady=5,padx=0, row=5, column=2)
-tk.Label(frame32, text ="mv",font=(18)).grid(pady=5,padx=0, row=5, column=3)
+tk.Label(frame32, text ="mv",font=(16)).grid(pady=5,padx=0, row=5, column=3)
 
-tk.Label(frame32, text ="Gk",font=(18)).grid(pady=5,padx=0, row=3, column=4)
+tk.Label(frame32, text ="Gk",font=(16)).grid(pady=5,padx=0, row=3, column=4)
 cuadro4.grid(pady=5,padx=0, row=3, column=5)
-tk.Label(frame32, text ="mS/cm3",font=(18)).grid(pady=5,padx=0, row=3, column=6)
+tk.Label(frame32, text ="mS/cm3",font=(16)).grid(pady=5,padx=0, row=3, column=6)
 
-tk.Label(frame32, text ="GNa",font=(18)).grid(pady=5,padx=0, row=4, column=4)
+tk.Label(frame32, text ="GNa",font=(16)).grid(pady=5,padx=0, row=4, column=4)
 cuadro5.grid(pady=5,padx=0, row=4, column=5)
-tk.Label(frame32, text ="mS/cm3",font=(18)).grid(pady=5,padx=0, row=4, column=6)
-
-
-
+tk.Label(frame32, text ="mS/cm3",font=(16)).grid(pady=5,padx=0, row=4, column=6)
 
 
 
@@ -252,19 +249,19 @@ cuadro7 = tk.Entry(frame321,width=8)
 cuadro8 = tk.Entry(frame321,width=8)
 cuadro9 = tk.Entry(frame321,width=8)
 
-tk.Label(frame321, text ="Tiempo de Simulación:",font=(18)).grid(pady=0,padx=0, row=0, column=0,sticky="w")
+tk.Label(frame321, text ="Tiempo de Simulación:",font='arial 12').grid(pady=0,padx=0, row=0, column=0,sticky="w")
 cuadro6.grid(pady=0,padx=0, row=0, column=1)
 tk.Label(frame321, text ="ms",font=(18)).grid(pady=0,padx=0, row=0, column=2)
 
-tk.Label(frame321, text ="Tiempo de Inicio de Estimulación",font=(18)).grid(pady=0,padx=0, row=1, column=0,sticky="w")
+tk.Label(frame321, text ="Tiempo de Inicio de Estimulación",font='arial 12').grid(pady=0,padx=0, row=1, column=0,sticky="w")
 cuadro7.grid(pady=0,padx=0, row=1, column=1)
 tk.Label(frame321, text ="ms",font=(18)).grid(pady=0,padx=0, row=1, column=2)
 
-tk.Label(frame321, text ="Tiempo de fin de Estimulación",font=(18)).grid(pady=0,padx=0, row=2, column=0,sticky="w")
+tk.Label(frame321, text ="Tiempo de fin de Estimulación",font='arial 12').grid(pady=0,padx=0, row=2, column=0,sticky="w")
 cuadro8.grid(pady=0,padx=0, row=2, column=1)
 tk.Label(frame321, text ="ms",font=(18)).grid(pady=0,padx=0, row=2, column=2)
 
-tk.Label(frame321, text ="Valor de Estimulación",font=(18)).grid(pady=0,padx=0, row=3, column=0,sticky="w")
+tk.Label(frame321, text ="Valor de Estimulación",font='arial 12').grid(pady=0,padx=0, row=3, column=0,sticky="w")
 cuadro9.grid(pady=0,padx=0, row=3, column=1)
 tk.Label(frame321, text ="ma",font=(18)).grid(pady=0,padx=0, row=3, column=2)
 
