@@ -313,5 +313,14 @@ button2.grid(pady=0,padx=0, row=0, column=1,sticky="e")
 button3.grid(pady=0,padx=0, row=0, column=2,sticky="e")
 button4.grid(pady=0,padx=0, row=0, column=3,sticky="e")
 
-#hola
+
 root.mainloop()
+
+
+# Revisar los metodos de solución del modelo
+
+# Como implementar lo de Valores que cambian la gráfica ( En especial el de valor de estimulación)
+
+# Los datos que se importan, cómo deberían ser
+
+# Como se debería actualizar la gráfica, con qué datos
