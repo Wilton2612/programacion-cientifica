@@ -1,3 +1,4 @@
+##
 import tkinter as tk
 from tkinter import messagebox, ttk
 
@@ -9,6 +10,7 @@ from matplotlib import style
 from PIL import ImageTk ,Image
 
 import numpy as np
+import scipy.optimize as opt
 
 from PIL import ImageTk ,Image
 
@@ -490,18 +492,20 @@ for time in range (1,len(t)):
     dmRK4[time] = dmRK4[time-1] + (h/6.0)*(km1 +2*km2 +2*km3 +km4)
     dhRK4[time] = dhRK4[time-1] + (h/6.0)*(kh1 +2*kh2 +2*kh3 +kh4)
 
+    #Euler hacia atrás
+    solBack = opt.fsolve(FunBack,
+                         np.array(dvEuBack[time-1],
+                                  dnEuBack[time-1],
+                                  dmEuBack[time-1],
+                                  dhEuBack[time-1]),
+                         (dvEuBack[time - 1],
+                         dnEuBack[time - 1],
+                         dmEuBack[time - 1],
+                         dhEuBack[time - 1]),
+                         xtol=10 ** -15
+                         )
 
 
 
-##Euler fo
-vm_EulerFor = np.zeros(len(t))
-for i in range (1, posicion finla)
-    #adelante
-    vm_EulerFor[i] = vm_EulerFor[i-1]+
-                    h * función dV_dt(vm_EulerFor[i-1,hi-1,m-1,n-1,todas las funciones anteriores])
-    neulerfor = neulerfor[i] + h * funcion de n(entra el voltaje anterior, neulerforanterior)
-    heulerfor = heuler[i] + h * funcion h (todo anterior)
-esto tambien se hace con rk1 y rk2
-#hacia mod todo se igualo a cero
-#definir función de la corriente
+
 
