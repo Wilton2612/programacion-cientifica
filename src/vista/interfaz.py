@@ -225,7 +225,6 @@ tk.Label(frame32, text ="mS/cm3",font=(16)).grid(pady=5,padx=0, row=4, column=6)
 
 
 
-
 """
 Frame Tiempos y Botones
 """
@@ -323,4 +322,4 @@ root.mainloop()
 
 # Los datos que se importan, cómo deberían ser
 
-# Como se debería actualizar la gráfica, con qué datos
+# Como se debería actualizar la tabla, con qué datos
