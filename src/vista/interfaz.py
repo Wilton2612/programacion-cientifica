@@ -315,3 +315,72 @@ button4.grid(pady=0,padx=0, row=0, column=3,sticky="e")
 
 #hola
 root.mainloop()
+##
+import numpy as np
+#parametros iniciales
+
+#Sistema de ecuaciones diferenciales
+def dn_dt(v,n):
+    return (((0.01*(v+55))/1-np.exp(-(v+55)/10))*(1-n)+(0.125*np.exp(-(v+65)/80.0))*n)
+def dm_dt(v,m):
+    return (((0.01*(v+40))/1-np.exp(-(v+40)/10))*(1-m)+(4*np.exp(-(v+65)/18.0))*m)
+def dh_dt(v,h):
+    return (((0.07*np.exp(-(v+65)/20))*(1-h)+(1/1+np.exp(-(v+35)/10.0))*h)
+
+#Euler back:
+    # yi = yi-1 + h * F(ti-1, yi-1)
+def EuBack (yn,ym,yh):
+    return [yn + h *dn_dt(),
+            ym + h *dm_dt(),
+            yh + h *dh_dt()]
+def EuMod (yn,ym,yh):
+    return [yn + (h/2.0) * dn_dt(),
+            ym + (h/2.0) * dm_dt(),
+            yh + (h/2.0) * dh_dt()]
+
+#Valores iniciales
+h = 0.01
+ti = 0.0
+tf = 3.0
+I_dn = #cuál es la condiciión inicial???
+I_dm =
+I_dh =
+t = np.arange(ti,tf+h,h)
+
+#vectores para cada una de las ecuaciones
+#para las ecuaciones de dn
+dnEuBack = np.zeros(len(t))
+dnEuMod = np.zeros(len(t))
+dnEuFor = np.zeros(len(t))
+
+#para las ecuaciones dm
+dmEuBack = np.zeros(len(t))
+dmEuMod = np.zeros(len(t))
+dmEuFor = np.zeros(len(t))
+
+#para las ecuaciones dh
+dhEuBack = np.zeros(len(t))
+dhEuMod = np.zeros(len(t))
+dhEuFor = np.zeros(len(t))
+
+#primeras posiciones
+#dn
+dnEuBack [0] = I_dn
+dnEuMod [0] = I_dn
+dnEuFor [0] = I_dn
+
+#dm
+dmEuBack [0] = I_dm
+dmEuMod [0] = I_dm
+dmEuFor [0] = I_dm
+
+#dh
+dhEuBack [0] = I_dh
+dhEuMod [0] = I_dh
+dhEuFor [0] = I_dh
+
+#iteraciones
+for time in range (1,len(t)):
+    #hacia adelante
+    dnEuFor[time] =
+
