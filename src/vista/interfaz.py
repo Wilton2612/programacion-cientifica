@@ -392,5 +392,12 @@ for time in range (1,len(t)):
     #modificado
     dnEuMod[time] = (dnEuMod[time -1] + (h/2) * dn_dt(t[time-1],dnEuMod[time -1]))/ #función modificado?
 
+    #RK2
+    #cómo se definen las ecuaciones??
+
+    dnRK2[time] =dnRK2[time-1] + ((h/2.0)*(k1+k2))
+    dmRK2[time] = dmRK2[time-1] + ((h/2.0)*(k1+k2))
+    dnRK2[time] = dnRK2[time -1] + ((h/2.0)*(k1+k2))
+
 
 
