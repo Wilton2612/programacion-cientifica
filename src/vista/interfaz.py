@@ -387,9 +387,10 @@ for time in range (1,len(t)):
     dh_dt[time] = dhEuFor[time-1] + h * dh_dt(t[time-1],dhEuFor[time-1])
 
     #atrás
-    dnEuBack[time] =
+    dnEuBack[time] = no sé (, dnEuBack[time-1],h)
 
     #modificado
+    dnEuMod[time] = (dnEuMod[time -1] + (h/2) * dn_dt(t[time-1],dnEuMod[time -1]))/ #función modificado?
 
 
 
