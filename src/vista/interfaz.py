@@ -330,7 +330,7 @@ def ah_V(v):
     return 0.07*np.exp(-v*65.0/20.0)
 def bh_V(v):
     return 1/(1+np.exp(-v+35.0/10.0))
-
+h = 0.01
 gk= 36.0*n**4.0 #qué es n
 gna = 120.0*m**3.0*h
 gl = 120.0
@@ -365,15 +365,9 @@ def FEulerModRoot(yt2,y1t1,y2t1,y3t1,y4t1,h):
             ]
 
 
-
-def EuMod (yn,ym,yh):
-    return [yn + (h/2.0) * dn_dt(),
-            ym + (h/2.0) * dm_dt(),
-            yh + (h/2.0) * dh_dt()]
-#adelante
 #Valores iniciales
-h = 0.01
-ti = 0.0
+
+ti = #usuario
 tf = #lo ingresa el usuario
 I_dn = 0.4
 I_dm = 0.05
@@ -383,6 +377,7 @@ I_dh = 0.5
 #i vector de tiempo. Crear vector de tiempo.
 #na= 50.0  k = 77 el = -54
 #potencial de menbrana -75,
+
 t = np.arange(ti,tf+h,h)
 
 #vectores para cada una de las ecuaciones
@@ -390,16 +385,30 @@ t = np.arange(ti,tf+h,h)
 dnEuBack = np.zeros(len(t))
 dnEuMod = np.zeros(len(t))
 dnEuFor = np.zeros(len(t))
+dnRK2 = np.zeros(len(t))
+dnRK4 = np.zeros(len(t))
 
 #para las ecuaciones dm
 dmEuBack = np.zeros(len(t))
 dmEuMod = np.zeros(len(t))
 dmEuFor = np.zeros(len(t))
+dmRK2 = np.zeros(len(t))
+dmRK4 = np.zeros(len(t))
 
 #para las ecuaciones dh
 dhEuBack = np.zeros(len(t))
 dhEuMod = np.zeros(len(t))
 dhEuFor = np.zeros(len(t))
+dhRK2 = np.zeros(len(t))
+dhRK4 = np.zeros(len(t))
+
+#para voltaje
+dvEuBack = np.zeros(len(t))
+dvEuMod = np.zeros(len(t))
+dvEuFor = np.zeros(len(t))
+dvRK2 = np.zeros(len(t))
+dvRK4 = np.zeros(len(t))
+
 
 #primeras posiciones
 #dn
@@ -417,25 +426,23 @@ dhEuBack [0] = I_dh
 dhEuMod [0] = I_dh
 dhEuFor [0] = I_dh
 
+#dv
+
 #iteraciones
 for time in range (1,len(t)):
-    #adelante
-    dnEuFor[time] = dnEuFor[time-1] + h * dn_dt(t[time-1],dnEuFor[time-1])
-    dmEuFor[time] = dmEuFor[time-1] + h * dm_dt(t[time-1],dmEuFor[time-1])
-    dh_dt[time] = dhEuFor[time-1] + h * dh_dt(t[time-1],dhEuFor[time-1])
-
-    #atrás
-    dnEuBack[time] = no sé (, dnEuBack[time-1],h)
-
-    #modificado
-    dnEuMod[time] = (dnEuMod[time -1] + (h/2) * dn_dt(t[time-1],dnEuMod[time -1]))/ #función modificado?
+    #Euler Forward
+    dvEuFor[time] = dvEuFor[time -1] + h * dv_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
+    dnEuFor[time] = dnEuFor[time -1] + h * dn_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
+    dmEuFor[time] = dmEuFor[time -1] + h * dm_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
+    dhEuFor[time] = dhEuFor[time -1] + h * dh_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
 
     #RK2
-    #cómo se definen las ecuaciones??
+    kv1 = dv_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1] )
+    kn1 = dn_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
+    km1 = dm_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
+    kh1 = dh_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
+    kv2 =
 
-    dnRK2[time] =dnRK2[time-1] + ((h/2.0)*(k1+k2))
-    dmRK2[time] = dmRK2[time-1] + ((h/2.0)*(k1+k2))
-    dnRK2[time] = dnRK2[time -1] + ((h/2.0)*(k1+k2))
 
 
 
