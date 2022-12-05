@@ -350,14 +350,19 @@ def dv_dt(Vm,I):
 
 
 #Euler back:
-    # yi = yi-1 + h * F(ti-1, yi-1)
+
 def FunBack (yt2, y1t1, y2t1, y3t1, y4t1,h):
     return [y1t1 + h * dv_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[0],
             y2t1 + h *dn_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[1],
             y3t1 + h *dm_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[2],
             y4t1 + h * dh_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[3]
             ]
-
+def FEulerModRoot(yt2,y1t1,y2t1,y3t1,y4t1,h):
+    return [y1t1 + (h/2.0) * dv_dt(y1t1,y2t1,y3t1,y4t1) + dv_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[0],
+            y2t1 + (h/2.0) * dn_dt(y1t1,y2t1,y3t1,y4t1) + dn_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[1],
+            y3t1 + (h/2.0) * dm_dt(y1t1,y2t1,y3t1,y4t1) + dm_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[2],
+            y4t1 + (h/2.0) * dh_dt(y1t1,y2t1,y3t1,y4t1) + dh_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[3]
+            ]
 
 
 
