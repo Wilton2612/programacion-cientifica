@@ -381,6 +381,15 @@ dhEuFor [0] = I_dh
 
 #iteraciones
 for time in range (1,len(t)):
+    #adelante
+    dnEuFor[time] = dnEuFor[time-1] + h * dn_dt(t[time-1],dnEuFor[time-1])
+    dmEuFor[time] = dmEuFor[time-1] + h * dm_dt(t[time-1],dmEuFor[time-1])
+    dh_dt[time] = dhEuFor[time-1] + h * dh_dt(t[time-1],dhEuFor[time-1])
+
+    #atrás
+    dnEuBack[time] =
+
+    #modificado
 
 
 
