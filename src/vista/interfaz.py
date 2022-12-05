@@ -322,52 +322,56 @@ import numpy as np
 #parametros iniciales
 
 def an_V(v):
-   return 0.01*(v+55.0)/1-np.exp(-v+55.0/10.0)
+   return 0.01*(v+55.0)/(1-np.exp(-(v+55.0)/10.0))
 
 def bn_V(v):
-    return 0.125*np.exp(-v+65.0/80.0)
+    return 0.125*np.exp(-(v+65.0)/80.0)
 def am_V(v):
     return (0.1*(v+40.0))/(1-np.exp(-v+40.0/10.0))
 def bm_V(v):
-    return 4*np.exp(-v*65.0/18.0)
+    return 4*np.exp(-(v+65.0)/18.0)
 def ah_V(v):
-    return 0.07*np.exp(-v*65.0/20.0)
+    return 0.07*np.exp(-(v+65.0)/20.0)
 def bh_V(v):
-    return 1/(1+np.exp(-v+35.0/10.0))
-h = 0.01
-n= 0.4
-m=0.05
-gk= 36.0*n**4.0
-gna = 120.0*(m**3.0)*h
-gl = 120.0
+    return 1/(1+np.exp(-(v+35.0)/10.0))
+##
+h = 0.01 ## Delta t
+h0= 0.5
+n0= 0.4
+m0=0.05
+
+gl = 0.3
 ek = -95.0
 ena = 50.0
 el = -54.0
-v= -65.0
+v0= -65.0
 #Sistema de ecuaciones diferenciales
 
 def dn_dt(v,n,m,h):
-    return an_V(v)*(1-n)+bn_V(v)*n  #[1]
+    return an_V(v)*(1-n)-bn_V(v)*n  #[1]
 
 def dm_dt(v,n,m,h):
-    return am_V(v)*(1-m)+ bm_V(v) *m  #[2]
+    return am_V(v)*(1-m)- bm_V(v) *m  #[2]
 def dh_dt(v,n,m,h):
-    return ah_V(v)*(1-h) + bh_V(v)*h  #[3]
-def dv_dt(Vm,n,m,h):
-        return -1*(gk*(Vm-ek)+gna*(Vm+ena)+gl*(Vm-el))  #denominador cm
+    return ah_V(v)*(1-h) - bh_V(v)*h  #[3]
+def dv_dt(Vm,n,m,h,I):
+    gk = 36.0 * (n ** 4.0)
+    gna = 120.0 * (m ** 3.0) * h
+    return -1*(gk*(Vm-ek)+gna*(Vm+ena)+gl*(Vm-el)+I)  #denominador cm
         # [0]
 
+I_v = np.ones(len(t))*14
 
 #Euler back:
 
-def FunBack (yt2, y1t1, y2t1, y3t1, y4t1,h):
-    return [y1t1 + h * dv_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[0],
+def FunBack (yt2, y1t1, y2t1, y3t1, y4t1,I_v,h):
+    return [y1t1 + h * dv_dt(yt2[0],yt2[1],yt2[2],yt2[3],I_v) - yt2[0],
             y2t1 + h *dn_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[1],
             y3t1 + h *dm_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[2],
             y4t1 + h * dh_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[3]
             ]
-def FEulerModRoot(yt2,y1t1,y2t1,y3t1,y4t1,h):
-    return [y1t1 + (h/2.0) * dv_dt(y1t1,y2t1,y3t1,y4t1) + dv_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[0],
+def FEulerModRoot(yt2,y1t1,y2t1,y3t1,y4t1,I_v,h):
+    return [y1t1 + (h/2.0) * dv_dt(y1t1,y2t1,y3t1,y4t1,I_v) + dv_dt(yt2[0], yt2[1], yt2[2], yt2[3],I_v) - yt2[0],
             y2t1 + (h/2.0) * dn_dt(y1t1,y2t1,y3t1,y4t1) + dn_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[1],
             y3t1 + (h/2.0) * dm_dt(y1t1,y2t1,y3t1,y4t1) + dm_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[2],
             y4t1 + (h/2.0) * dh_dt(y1t1,y2t1,y3t1,y4t1) + dh_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[3]
@@ -436,21 +440,25 @@ dhEuMod [0] = I_dh
 dhEuFor [0] = I_dh
 
 #dv
+dvEuBack [0] = -65.00
+dvEuMod [0] = -65.00
+dvEuFor [0] = -65.00
+
 ##
 #iteraciones
 for time in range (1,len(t)):
     #Euler Forward
-    dvEuFor[time] = dvEuFor[time -1] + h * dv_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
+    dvEuFor[time] = dvEuFor[time -1] + h * dv_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1],I_v[time])
     dnEuFor[time] = dnEuFor[time -1] + h * dn_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
     dmEuFor[time] = dmEuFor[time -1] + h * dm_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
     dhEuFor[time] = dhEuFor[time -1] + h * dh_dt(dvEuFor[time-1],dnEuFor[time-1],dmEuFor[time-1],dhEuFor[time-1])
 
     #RK2
-    kv1 = dv_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1] )
+    kv1 = dv_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1],I_v[time] )
     kn1 = dn_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
     km1 = dm_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
     kh1 = dh_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
-    kv2 = dv_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
+    kv2 = dv_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h,I_v[time])
     kn2 = dn_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
     km2 = dm_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
     kh2 = dh_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
@@ -462,13 +470,13 @@ for time in range (1,len(t)):
 
     #RK4
 
-    kv1 = dv_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
+    kv1 = dv_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1],I_v[time])
     kn1 = dn_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
     km1 = dm_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
     kh1 = dh_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
 
     kv2= dv_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
-                dhRK4[time-1] + (0.5*kh1*h))
+                dhRK4[time-1] + (0.5*kh1*h),I_v[time])
     kn2 = dn_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
                 dhRK4[time-1] + (0.5*kh1*h))
     km2 = dm_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
@@ -477,7 +485,7 @@ for time in range (1,len(t)):
                 dhRK4[time-1] + (0.5*kh1*h))
 
     kv3 = dv_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
-                dhRK4[time-1] + (0.5*kh2*h))
+                dhRK4[time-1] + (0.5*kh2*h),I_v[time])
     kn3 = dn_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
                 dhRK4[time-1] + (0.5*kh2*h))
     km3 = dm_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
@@ -486,7 +494,7 @@ for time in range (1,len(t)):
                 dhRK4[time-1] + (0.5*kh2*h))
 
     kv4= dv_dt(dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
-                dhRK4[time-1] + (kh3*h))
+                dhRK4[time-1] + (kh3*h),I_v[time])
     kn4 = dn_dt(dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
                 dhRK4[time-1] + (kh3*h))
     km4 = dm_dt( dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
@@ -508,9 +516,8 @@ for time in range (1,len(t)):
                          (dvEuBack[time - 1],
                          dnEuBack[time - 1],
                          dmEuBack[time - 1],
-                         dhEuBack[time - 1],h),
-                         xtol=10 ** -15
-                         )
+                         dhEuBack[time - 1],I_v[time], h),
+                         xtol=10 ** -15)
     dvEuBack[time] = solBack[0]
     dnEuBack[time] = solBack[1]
     dmEuBack[time] = solBack[2]
@@ -525,7 +532,7 @@ for time in range (1,len(t)):
                          (dvEuBack[time - 1],
                           dnEuBack[time - 1],
                           dmEuBack[time - 1],
-                          dhEuBack[time - 1],h),
+                          dhEuBack[time - 1],I_v[time],h),
                          xtol=10 ** -15
                          )
     dvEuMod[time] = solMod[0]
@@ -533,6 +540,8 @@ for time in range (1,len(t)):
     dmEuMod[time] = solMod[2]
     dhEuMod[time] = solMod[3]
 ##
-plt.figure()
-plt.plot(t, dvEuFor, 'b', label = 'EulerFor')
-plt.show()
+#plt.figure()
+#plt.plot(dvEuFor)
+#plt.plot(dvEuMod)
+plt.plot(dvEuBack)
+#plt.show()
