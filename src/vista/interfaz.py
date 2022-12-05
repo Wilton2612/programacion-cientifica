@@ -322,10 +322,7 @@ import numpy as np
 #parametros iniciales
 
 def an_V(v):
-    if v == -65:
-        an_V= 0.1
-    else:
-        0.01*(v+55.0)/1-np.exp(-v+55.0/10.0)
+   return 0.01*(v+55.0)/1-np.exp(-v+55.0/10.0)
 
 def bn_V(v):
     return 0.125*np.exp(-v+65.0/80.0)
@@ -341,22 +338,23 @@ h = 0.01
 n= 0.4
 m=0.05
 gk= 36.0*n**4.0
-gna = 120.0*m**3.0*h
+gna = 120.0*(m**3.0)*h
 gl = 120.0
 ek = -95.0
 ena = 50.0
 el = -54.0
+v= -65.0
 #Sistema de ecuaciones diferenciales
 
-def dn_dt(an_v,bn_v,n):
-    return an_V*(1-n)+bn_v*n  #[1]
+def dn_dt(v,n,m,h):
+    return an_V(v)*(1-n)+bn_V(v)*n  #[1]
 
-def dm_dt(am_V,bm_V,m):
-    return am_V*(1-m)+ bm_V *m  #[2]
-def dh_dt(ah_V,h,bh_V):
-    return ah_V*(1-h) + bh_V*h  #[3]
-def dv_dt(Vm,I):
-        return -1*(gk*(Vm-ek)+gna*(Vm+ena)+gl*(Vm-el)+I)  #denominador cm
+def dm_dt(v,n,m,h):
+    return am_V(v)*(1-m)+ bm_V(v) *m  #[2]
+def dh_dt(v,n,m,h):
+    return ah_V(v)*(1-h) + bh_V(v)*h  #[3]
+def dv_dt(Vm,n,m,h):
+        return -1*(gk*(Vm-ek)+gna*(Vm+ena)+gl*(Vm-el))  #denominador cm
         # [0]
 
 
@@ -503,14 +501,14 @@ for time in range (1,len(t)):
 
     #Euler hacia atrás
     solBack = opt.fsolve(FunBack,
-                         np.array(dvEuBack[time-1],
+                         np.array([dvEuBack[time-1],
                                   dnEuBack[time-1],
                                   dmEuBack[time-1],
-                                  dhEuBack[time-1]),
+                                  dhEuBack[time-1]]),
                          (dvEuBack[time - 1],
                          dnEuBack[time - 1],
                          dmEuBack[time - 1],
-                         dhEuBack[time - 1]),
+                         dhEuBack[time - 1],h),
                          xtol=10 ** -15
                          )
     dvEuBack[time] = solBack[0]
@@ -520,18 +518,21 @@ for time in range (1,len(t)):
 
     #Euler modificado
     solMod = opt.fsolve(FEulerModRoot,
-                         np.array(dvEuBack[time - 1],
+                         np.array([dvEuBack[time - 1],
                                   dnEuBack[time - 1],
                                   dmEuBack[time - 1],
-                                  dhEuBack[time - 1]),
+                                  dhEuBack[time - 1]]),
                          (dvEuBack[time - 1],
                           dnEuBack[time - 1],
                           dmEuBack[time - 1],
-                          dhEuBack[time - 1]),
+                          dhEuBack[time - 1],h),
                          xtol=10 ** -15
                          )
     dvEuMod[time] = solMod[0]
     dnEuMod[time] = solMod[1]
     dmEuMod[time] = solMod[2]
     dhEuMod[time] = solMod[3]
-
+##
+plt.figure()
+plt.plot(t, dvEuFor, 'b', label = 'EulerFor')
+plt.show()
