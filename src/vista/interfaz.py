@@ -318,33 +318,66 @@ root.mainloop()
 ##
 import numpy as np
 #parametros iniciales
+def an_V(v):
+    return 0.01*(v+55.0)/1-np.exp(-v+55.0/10.0)
+def bn_V(v):
+    return 0.125*np.exp(-v+65.0/80.0)
+def am_V(v):
+    return (0.1*(v+40.0))/(1-np.exp(-v+40.0/10.0))
+def bm_V(v):
+    return 4*np.exp(-v*65.0/18.0)
+def ah_V(v):
+    return 0.07*np.exp(-v*65.0/20.0)
+def bh_V(v):
+    return 1/(1+np.exp(-v+35.0/10.0))
 
+gk= 36.0*n**4.0 #qué es n
+gna = 120.0*m**3.0*h
+gl = 120.0
+ek = -95.0
+ena = 50.0
+el = -54.0
 #Sistema de ecuaciones diferenciales
-def dn_dt(v,n):
-    return (((0.01*(v+55))/1-np.exp(-(v+55)/10))*(1-n)+(0.125*np.exp(-(v+65)/80.0))*n)
-def dm_dt(v,m):
-    return (((0.01*(v+40))/1-np.exp(-(v+40)/10))*(1-m)+(4*np.exp(-(v+65)/18.0))*m)
-def dh_dt(v,h):
-    return (((0.07*np.exp(-(v+65)/20))*(1-h)+(1/1+np.exp(-(v+35)/10.0))*h)
+def dn_dt(an_v,bn_v,n):
+    return an_V*(1-n)+bn_v*n  #[1]
+def dm_dt(am_V,bm_V,m):
+    return am_V*(1-m)+ bm_V *m  #[2]
+def dh_dt(ah_V,h,bh_V):
+    return ah_V*(1-h) + bh_V*h  #[3]
+def dv_dt(Vm,I):
+        return (gk*(Vm-ek)+gna*(Vm+ena)+gl*(Vm-el)+I)  #denominador cm
+        #de donde se saca cm?? [0]
+
 
 #Euler back:
     # yi = yi-1 + h * F(ti-1, yi-1)
-def EuBack (yn,ym,yh):
-    return [yn + h *dn_dt(),
-            ym + h *dm_dt(),
-            yh + h *dh_dt()]
+def FunBack (yt2, y1t1, y2t1, y3t1, y4t1,h):
+    return [y1t1 + h * dv_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[0],
+            y2t1 + h *dn_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[1],
+            y3t1 + h *dm_dt(yt2[0], yt2[1], yt2[2], yt2[3]) - yt2[2],
+            y4t1 + h * dh_dt(yt2[0],yt2[1],yt2[2],yt2[3]) - yt2[3]
+            ]
+
+
+
+
 def EuMod (yn,ym,yh):
     return [yn + (h/2.0) * dn_dt(),
             ym + (h/2.0) * dm_dt(),
             yh + (h/2.0) * dh_dt()]
-
+#adelante
 #Valores iniciales
 h = 0.01
 ti = 0.0
-tf = 3.0
-I_dn = #cuál es la condiciión inicial???
-I_dm =
-I_dh =
+tf = #lo ingresa el usuario
+I_dn = 0.4
+I_dm = 0.05
+I_dh = 0.5
+#capacitancia = 1
+#conductancia = gna = 100 gl = 120 #todas las v son bm
+#i vector de tiempo. Crear vector de tiempo.
+#na= 50.0  k = 77 el = -54
+#potencial de menbrana -75,
 t = np.arange(ti,tf+h,h)
 
 #vectores para cada una de las ecuaciones
@@ -400,4 +433,16 @@ for time in range (1,len(t)):
     dnRK2[time] = dnRK2[time -1] + ((h/2.0)*(k1+k2))
 
 
+
+##Euler fo
+vm_EulerFor = np.zeros(len(t))
+for i in range (1, posicion finla)
+    #adelante
+    vm_EulerFor[i] = vm_EulerFor[i-1]+
+                    h * función dV_dt(vm_EulerFor[i-1,hi-1,m-1,n-1,todas las funciones anteriores])
+    neulerfor = neulerfor[i] + h * funcion de n(entra el voltaje anterior, neulerforanterior)
+    heulerfor = heuler[i] + h * funcion h (todo anterior)
+esto tambien se hace con rk1 y rk2
+#hacia mod todo se igualo a cero
+#definir función de la corriente
 
