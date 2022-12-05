@@ -441,7 +441,54 @@ for time in range (1,len(t)):
     kn1 = dn_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
     km1 = dm_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
     kh1 = dh_dt(dvRK2[time-1],dnRK2[time-1],dmRK2[time -1], dhRK2[time-1])
-    kv2 =
+    kv2 = dv_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
+    kn2 = dn_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
+    km2 = dm_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
+    kh2 = dh_dt(dvRK2[time-1] + kv1 * h, dnRK2[time-1] +kn1 *h, dmRK2[time-1] + km1 *h, dhRK2[time-1] + kh1 *h)
+
+    dvRK2[time] = dvRK2[time-1] + (h/2.0)*(kv1+kv1)
+    dnRK2[time] = dnRK2[time-1] + (h/2.0)*(kn1+kn2)
+    dmRK2[time] = dmRK2[time-1] + (h/2.0)*(km1+km2)
+    dhRK2[time]=  dhRK2[time-1] + (h/2.0)*(kh1+kh2)
+
+    #RK4
+
+    kv1 = dv_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
+    kn1 = dn_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
+    km1 = dm_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
+    kh1 = dh_dt(dvRK2[time - 1], dnRK2[time - 1], dmRK2[time - 1], dhRK2[time - 1])
+
+    kv2= dv_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
+                dhRK4[time-1] + (0.5*kh1*h))
+    kn2 = dn_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
+                dhRK4[time-1] + (0.5*kh1*h))
+    km2 = dm_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
+                dhRK4[time-1] + (0.5*kh1*h))
+    kh2 = dh_dt(dvRK4[time -1] + (0.5 * kv1*h), dnRK4[time-1] + (0.5 + kn1*h), dmRK4[time -1] + (0.5*km1*h),
+                dhRK4[time-1] + (0.5*kh1*h))
+
+    kv3 = dv_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
+                dhRK4[time-1] + (0.5*kh2*h))
+    kn3 = dn_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
+                dhRK4[time-1] + (0.5*kh2*h))
+    km3 = dm_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
+                dhRK4[time-1] + (0.5*kh2*h))
+    kh3 = dh_dt(dvRK4[time -1] + (0.5 * kv2*h), dnRK4[time-1] + (0.5 + kn2*h), dmRK4[time -1] + (0.5*km2*h),
+                dhRK4[time-1] + (0.5*kh2*h))
+
+    kv4= dv_dt(dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
+                dhRK4[time-1] + (kh3*h))
+    kn4 = dn_dt(dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
+                dhRK4[time-1] + (kh3*h))
+    km4 = dm_dt( dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
+                dhRK4[time-1] + (kh3*h))
+    kh4 = dh_dt(dvRK4[time -1] + (kv3*h), dnRK4[time-1] + (kn3*h), dmRK4[time -1] + (km3*h),
+                dhRK4[time-1] + (kh3*h))
+
+    dvRK4[time] = dvRK4[time-1] + (h/6.0)*(kv1 +2*kv2 +2*kv3 +kv4)
+    dnRK4[time] = dnRK4[time-1] + (h/6.0)*(kn1 +2*kn2 +2*kn3 +kn4)
+    dmRK4[time] = dmRK4[time-1] + (h/6.0)*(km1 +2*km2 +2*km3 +km4)
+    dhRK4[time] = dhRK4[time-1] + (h/6.0)*(kh1 +2*kh2 +2*kh3 +kh4)
 
 
 
