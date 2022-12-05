@@ -381,6 +381,6 @@ dhEuFor [0] = I_dh
 
 #iteraciones
 for time in range (1,len(t)):
-    #hacia adelante
-    dnEuFor[time] =
+
+
 
