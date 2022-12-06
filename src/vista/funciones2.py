@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import optimize as opt
-
+import struct as st
 
 def an_V(V):
    return 0.01 * (V + 55.0) / (1.0 - np.exp(-(V + 55.0) / 10.0))
@@ -309,3 +309,39 @@ def elegir(metodo, parametros):
     elif metodo ==5:
         #euler hacia atrás
         return euler_atras(parametros[0], parametros[1], parametros[2], parametros[3],parametros[4], parametros[5], parametros[6], parametros[7] ) 
+
+
+"""Funciones Archivos"""
+def importar(variable):
+    
+
+    if variable == 1:
+        archivo = open("vt.bin", "rb")
+    elif variable == 2:
+        archivo = open("gk.bin", "rb")
+    elif variable == 3:
+        archivo = open("gn.bin", "rb")
+    
+    lect = archivo.read()
+   
+    archivo.close()  
+
+    datos = st.unpack('d' * int(len(lect) / 4), lect) #Desempacado en 4 bytes
+
+    datos = np.asarray(datos)
+    
+    return datos
+
+def exportar(variable,arreglo):
+
+    if variable == 1:
+        archivo = open("vt.bin", "wb")
+    elif variable == 2:
+        archivo = open("gk.bin", "wb")
+    elif variable == 3:
+        archivo = open("gn.bin", "wb")
+
+    var = st.pack("H"*int(len(arreglo)),*arreglo)
+    archivo.write(var)
+    archivo.close()
+    
